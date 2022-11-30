@@ -1,0 +1,39 @@
+import { ICallbackProps } from "../types";
+
+export const GET_CHARACTERS_SUCCESS = "[character] get characters success";
+export const GET_CHARACTERS_FAILURE = "[character] get characters failure";
+export const GET_CHARACTERS = "[character] get characters";
+export const GET_CHARACTER = "[character] get character";
+export const GET_CHARACTER_SUCCESS = "[character] get character success";
+export const GET_CHARACTER_FAILURE = "[character] get character failure";
+
+export const getCharacterSuccess = (response: any) => ({
+  type: GET_CHARACTER_SUCCESS,
+  payload: response,
+});
+
+export const getCharacterFailure = (error: any) => ({
+  type: GET_CHARACTER_FAILURE,
+  payload: error,
+});
+
+export const getCharactersSuccess = (response: any) => ({
+  type: GET_CHARACTERS_SUCCESS,
+  payload: response,
+});
+
+export const getCharactersFailure = (error: any) => ({
+  type: GET_CHARACTERS_FAILURE,
+  payload: error,
+});
+
+export const getCharacter = (callback?: ICallbackProps) => ({
+  type: GET_CHARACTER,
+  callback,
+});
+
+export const getCharacters = (id: string, callback?: ICallbackProps) => ({
+  type: GET_CHARACTER,
+  id,
+  callback,
+});

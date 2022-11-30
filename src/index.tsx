@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { configureStore } from "./application/store";
+
 import "./index.css";
+import services from "./infrastructure/services";
 import reportWebVitals from "./reportWebVitals";
 import App from "./routes";
 
@@ -9,7 +13,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={configureStore(services)}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
