@@ -17,9 +17,15 @@ module.exports = {
           },
         ],
         h1: [
-          "20px",
+          "34px",
           {
-            lineHeight: "28px",
+            lineHeight: "35px",
+          },
+        ],
+        "h1-sm": [
+          "24px",
+          {
+            lineHeight: "20px",
           },
         ],
       },

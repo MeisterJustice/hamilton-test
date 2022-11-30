@@ -42,9 +42,10 @@ const character =
       [GET_CHARACTERS]: async () => {
         try {
           dispatch(uiActions.setLoading(true));
-          const characters: any = await api.character.getCharacters();
-
-          action?.callback?.onSuccess?.(characters?.data);
+          const characters: any = await api.character.getCharacters(
+            action?.payload
+          );
+          action?.callback?.onSuccess?.(characters);
 
           dispatch(getCharactersSuccess(characters));
         } catch (error: any) {

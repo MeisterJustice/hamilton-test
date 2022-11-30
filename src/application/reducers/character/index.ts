@@ -9,8 +9,12 @@ import { ICharacters } from "./type";
 
 const initialState: ICharacters = {
   character: {},
-  characters: [],
+  results: [],
   error: "",
+  count: 0,
+  offset: 0,
+  total: 0,
+  limit: 0,
 };
 
 const character = (
@@ -21,7 +25,7 @@ const character = (
     case GET_CHARACTERS_SUCCESS:
       return {
         ...state,
-        characters: payload?.data,
+        ...payload,
         error: "",
       };
     case GET_CHARACTERS_FAILURE:

@@ -32,8 +32,8 @@ export const getCharacter = (callback?: ICallbackProps) => ({
   callback,
 });
 
-export const getCharacters = (id: string, callback?: ICallbackProps) => ({
-  type: GET_CHARACTER,
-  id,
+export const getCharacters = (query?: string, callback?: ICallbackProps) => ({
+  type: GET_CHARACTERS,
   callback,
+  payload: query,
 });

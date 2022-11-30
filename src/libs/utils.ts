@@ -1,4 +1,3 @@
 export const isProduction = () => {
-  // this would reference your env
-  return true;
+  return process.env.NODE_ENV === "production";
 };
