@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -7,14 +7,18 @@ import { getCharacters as characters } from "../application/selectors/character"
 import { Container, Pagination } from "../components/Ui";
 import { debounce } from "../libs/utils";
 
+const limitOptions = [20, 40, 50, 100];
+
 const HomePage = () => {
   const dispatch = useDispatch();
   const { offset, total, results, limit } = useSelector(characters);
   const navigate = useNavigate();
+  const scrollRef: any = useRef(null);
 
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [searchText, setSearchText] = useState<string>("");
+  const [filterText, setFilterText] = useState<string>("name");
 
   const pageArray = Array.from(Array(totalPages), (_, x) => x + 1);
 
@@ -50,7 +54,11 @@ const HomePage = () => {
   const callGetCharacters = (query?: string) => {
     // const searchQuery = searchText ? `&nameStartsWith=${searchText}` : "";
     // const allQuery = (query || "") + searchQuery;
-    dispatch(getCharacters(query || ""));
+    dispatch(
+      getCharacters(query || "", {
+        onSuccess: () => scrollToTop(),
+      })
+    );
   };
 
   const handlePagination = (type: string | number) => {
@@ -73,8 +81,29 @@ const HomePage = () => {
     setPage(1);
   }, 10);
 
+  const handleFilter = (value: string) => {
+    setFilterText(value);
+    const searchQuery = searchText ? `&nameStartsWith=${searchText}` : "";
+    const filterQuery = `&orderBy=${value}`;
+    const allQuery = filterQuery + searchQuery;
+    callGetCharacters(allQuery);
+  };
+
+  const handleLimit = (value: string) => {
+    const query = `&limit=${value}`;
+    callGetCharacters(query);
+  };
+
+  const scrollToTop = () => {
+    scrollRef.current.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
-    callGetCharacters();
+    if (results?.length === 0) {
+      callGetCharacters();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,7 +115,7 @@ const HomePage = () => {
   }, [total, limit]);
 
   return (
-    <div>
+    <div ref={scrollRef}>
       <Container>
         <div className="py-10 xl:py-20">
           <h1 className="lg:text-h1 text-h1-sm">Marvel Characters</h1>
@@ -98,6 +127,15 @@ const HomePage = () => {
                 placeholder="search"
                 className="outline-gray-500 border border-gray-600 rounded h-12 w-full lg:w-80 p-3"
               />
+              <select
+                value={filterText}
+                onChange={(e) => handleFilter(e.target.value)}
+                name="filter"
+                className="w-full mt-3 lg:mt-0 lg:w-44 cursor-pointer p-3 h-12 rounded border-gray-600 border outline-gray-500"
+              >
+                <option value="name">ASC</option>
+                <option value="-name">DESC</option>
+              </select>
             </div>
             <table className="table-auto w-full overflow-x-auto border">
               <thead className="border rounded">
@@ -128,6 +166,24 @@ const HomePage = () => {
               pageArrayLength={pageArray.length}
               totalPages={totalPages}
             />
+
+            {results!?.length > 0 && (
+              <div className="mt-7">
+                <label htmlFor="limits">limit</label>
+                <select
+                  value={filterText}
+                  onChange={(e) => handleLimit(e.target.value)}
+                  name="filter"
+                  className="ml-3 w-20 cursor-pointer p-3 rounded border-gray-600 border outline-gray-500"
+                >
+                  {limitOptions.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
       </Container>
