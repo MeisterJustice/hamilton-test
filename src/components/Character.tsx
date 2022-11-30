@@ -41,7 +41,9 @@ const CharacterPage = () => {
         <h2 className="lg:text-h1 text-h1-sm">Stories</h2>
         <ul className="mt-5 list-disc">
           {character?.stories?.items?.map((story) => (
-            <li className="mb-4 ml-4">{story?.name}</li>
+            <li key={story.name} className="mb-4 ml-4">
+              {story?.name}
+            </li>
           ))}
         </ul>
       </div>
@@ -50,7 +52,9 @@ const CharacterPage = () => {
         <h2 className="lg:text-h1 text-h1-sm">Events</h2>
         <ul className="mt-5 list-disc">
           {character?.events?.items?.map((event) => (
-            <li className="mb-4 ml-4">{event?.name}</li>
+            <li key={event.name} className="mb-4 ml-4">
+              {event?.name}
+            </li>
           ))}
         </ul>
       </div>
@@ -59,7 +63,9 @@ const CharacterPage = () => {
         <h2 className="lg:text-h1 text-h1-sm">Series</h2>
         <ul className="mt-5 list-disc">
           {character?.series?.items?.map((series) => (
-            <li className="mb-4 ml-4">{series?.name}</li>
+            <li key={series.name} className="mb-4 ml-4">
+              {series?.name}
+            </li>
           ))}
         </ul>
       </div>

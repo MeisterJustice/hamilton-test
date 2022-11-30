@@ -124,9 +124,9 @@ const HomePage = () => {
           <h1 className="lg:text-h1 text-h1-sm">Marvel Characters</h1>
           <div className="mt-10">
             <div className="my-5 lg:flex justify-between items-center">
-              <div className="flex items-center">
+              <div className="flex xl:items-center flex-col xl:flex-row">
                 {loading ? (
-                  <div className="w-16">
+                  <div className="w-16 h-6">
                     <Loader />
                   </div>
                 ) : (
@@ -141,7 +141,7 @@ const HomePage = () => {
                   value={searchText}
                   onChange={(e) => handleSearchText(e.target.value)}
                   placeholder="search"
-                  className="outline-gray-500 border border-gray-600 rounded h-12 w-full lg:w-80 p-3"
+                  className="outline-gray-500 mt-3 xl:mt-0 border border-gray-600 rounded h-12 w-full lg:w-80 p-3"
                 />
               </div>
               <select
