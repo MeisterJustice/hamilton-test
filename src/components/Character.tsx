@@ -2,14 +2,26 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCharacter } from "../application/actions/character";
 import { getCharacters as characters } from "../application/selectors/character";
+import { getLoading } from "../application/selectors/ui";
 
 const CharacterPage = () => {
   const dispatch = useDispatch();
   const { character } = useSelector(characters);
+  const loading = useSelector(getLoading);
 
   useEffect(() => {
-    dispatch(getCharacter("1011198"));
+    const path = window.location.pathname;
+    const character_id = path.substring(1);
+    dispatch(getCharacter(character_id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading)
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <div className="text-h1">Loading</div>
+      </div>
+    );
   return (
     <div className="px-5 xl:px-14">
       <div className="pt-10 w-full xl:pt-20 lg:flex justify-center items-center">

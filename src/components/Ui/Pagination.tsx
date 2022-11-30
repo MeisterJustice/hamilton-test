@@ -1,4 +1,6 @@
 import classNames from "classnames";
+import { useSelector } from "react-redux";
+import { getLoading } from "../../application/selectors/ui";
 
 interface IPagination {
   length: number;
@@ -19,6 +21,7 @@ const Pagination = ({
   pageArrayLength,
   totalPages,
 }: IPagination) => {
+  const loading = useSelector(getLoading);
   return (
     <div
       className={classNames(
@@ -29,7 +32,7 @@ const Pagination = ({
       )}
     >
       <button
-        disabled={offset === 0}
+        disabled={offset === 0 || loading}
         className={classNames("cursor-pointer font-semibold", {
           "!cursor-not-allowed text-gray-500": offset === 0,
         })}
@@ -38,31 +41,42 @@ const Pagination = ({
         Prev
       </button>
 
-      <div className="flex items-center lg:gap-8 gap-5">
-        {customPagination.map((p: any) => (
-          <button
-            key={p}
-            className={`${page === p ? "text-blue-400 font-semibold" : ""}`}
-            onClick={() => {
-              handlePagination(p);
-            }}
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <div
+            className="spinner-border animate-spin inline-block w-4 h-4 border-1 rounded-full"
+            role="status"
           >
-            {p}
+            <span className="visually-hidden h-14 w-14 rounded-full border-4"></span>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center lg:gap-8 gap-5">
+          {customPagination.map((p: any) => (
+            <button
+              key={p}
+              className={`${page === p ? "text-blue-400 font-semibold" : ""}`}
+              onClick={() => {
+                handlePagination(p);
+              }}
+            >
+              {p}
+            </button>
+          ))}
+
+          {pageArrayLength > 3 && <p className="tracking-wide">...</p>}
+
+          <button
+            className={`${page === totalPages ? "text-blue-400" : ""}`}
+            onClick={() => handlePagination(totalPages)}
+          >
+            {totalPages}
           </button>
-        ))}
-
-        {pageArrayLength > 3 && <p className="tracking-wide">...</p>}
-
-        <button
-          className={`${page === totalPages ? "text-blue-400" : ""}`}
-          onClick={() => handlePagination(totalPages)}
-        >
-          {totalPages}
-        </button>
-      </div>
+        </div>
+      )}
 
       <button
-        disabled={page === totalPages}
+        disabled={page === totalPages || loading}
         className={classNames("cursor-pointer", {
           "!cursor-not-allowed text-gray-500": page === totalPages,
         })}

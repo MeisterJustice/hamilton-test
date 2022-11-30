@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import classNames from "classnames";
 
 import { getCharacters } from "../application/actions/character";
 import { getCharacters as characters } from "../application/selectors/character";
@@ -10,7 +9,7 @@ import { debounce } from "../libs/utils";
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { count, offset, total, results, limit } = useSelector(characters);
+  const { offset, total, results, limit } = useSelector(characters);
   const navigate = useNavigate();
 
   const [page, setPage] = useState<number>(1);
