@@ -25,7 +25,6 @@ const character =
         try {
           dispatch(uiActions.setLoading(true));
           const character: any = await api.character.getCharacter(action.id);
-          console.log(character);
 
           action?.callback?.onSuccess?.(character);
 
