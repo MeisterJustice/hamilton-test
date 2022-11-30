@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { getLoading } from "../../application/selectors/ui";
+import Loader from "./Loader";
 
 interface IPagination {
   length: number;
@@ -42,14 +43,7 @@ const Pagination = ({
       </button>
 
       {loading ? (
-        <div className="flex justify-center items-center">
-          <div
-            className="spinner-border animate-spin inline-block w-4 h-4 border-1 rounded-full"
-            role="status"
-          >
-            <span className="visually-hidden h-14 w-14 rounded-full border-4"></span>
-          </div>
-        </div>
+        <Loader />
       ) : (
         <div className="flex items-center lg:gap-8 gap-5">
           {customPagination.map((p: any) => (

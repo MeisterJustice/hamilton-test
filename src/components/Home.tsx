@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 import { getCharacters } from "../application/actions/character";
 import { getCharacters as characters } from "../application/selectors/character";
-import { Container, Pagination } from "../components/Ui";
+import { getLoading } from "../application/selectors/ui";
+import { Container, Loader, Pagination } from "../components/Ui";
 import { debounce } from "../libs/utils";
 
 const limitOptions = [20, 40, 50, 100];
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const loading = useSelector(getLoading);
   const { offset, total, results, limit } = useSelector(characters);
   const navigate = useNavigate();
   const scrollRef: any = useRef(null);
@@ -52,8 +54,6 @@ const HomePage = () => {
   };
 
   const callGetCharacters = (query?: string) => {
-    // const searchQuery = searchText ? `&nameStartsWith=${searchText}` : "";
-    // const allQuery = (query || "") + searchQuery;
     dispatch(
       getCharacters(query || "", {
         onSuccess: () => scrollToTop(),
@@ -64,7 +64,10 @@ const HomePage = () => {
   const handlePagination = (type: string | number) => {
     const skip = handleNumberToSkip(type);
     const query = `&offset=${skip}`;
-    callGetCharacters(query);
+    const searchQuery = searchText ? `&nameStartsWith=${searchText}` : "";
+    const filterQuery = `&orderBy=${filterText}`;
+    const allQuery = filterQuery + searchQuery + query;
+    callGetCharacters(allQuery);
 
     const newPage = handlePage(type);
     setPage(newPage);
@@ -121,12 +124,26 @@ const HomePage = () => {
           <h1 className="lg:text-h1 text-h1-sm">Marvel Characters</h1>
           <div className="mt-10">
             <div className="my-5 lg:flex justify-between items-center">
-              <input
-                value={searchText}
-                onChange={(e) => handleSearchText(e.target.value)}
-                placeholder="search"
-                className="outline-gray-500 border border-gray-600 rounded h-12 w-full lg:w-80 p-3"
-              />
+              <div className="flex items-center">
+                {loading ? (
+                  <div className="w-16">
+                    <Loader />
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => callGetCharacters()}
+                    className="mr-4 text-blue-500 font-semibold cursor-pointer"
+                  >
+                    to top
+                  </div>
+                )}
+                <input
+                  value={searchText}
+                  onChange={(e) => handleSearchText(e.target.value)}
+                  placeholder="search"
+                  className="outline-gray-500 border border-gray-600 rounded h-12 w-full lg:w-80 p-3"
+                />
+              </div>
               <select
                 value={filterText}
                 onChange={(e) => handleFilter(e.target.value)}

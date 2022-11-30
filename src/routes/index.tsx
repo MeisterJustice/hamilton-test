@@ -3,9 +3,7 @@ import { Character, Home } from "../views";
 import "../App.css";
 
 const App = () => {
-  // props.match.params.id
   return (
-    //   <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -13,7 +11,6 @@ const App = () => {
         <Route path="*" element={<Home />} />
       </Routes>
     </Router>
-    //   </ErrorBoundary>
   );
 };
 
