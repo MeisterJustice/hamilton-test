@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import { getCharacters } from "../application/actions/character";
 import { getCharacters as characters } from "../application/selectors/character";
-import { Container } from "../components/Ui";
+import { Container, Pagination } from "../components/Ui";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -102,59 +102,15 @@ const HomePage = () => {
                 ))}
               </tbody>
             </table>
-            <div
-              className={classNames(
-                "flex mt-3 items-center justify-between text-base font-semibold",
-                {
-                  hidden: results?.length === 0,
-                }
-              )}
-            >
-              <button
-                disabled={offset === 0}
-                className={classNames("cursor-pointer font-semibold", {
-                  "!cursor-not-allowed text-gray-500": offset === 0,
-                })}
-                onClick={() => handlePagination("p")}
-              >
-                Prev
-              </button>
-
-              <div className="flex items-center lg:gap-8 gap-5">
-                {customPagination.map((p) => (
-                  <button
-                    key={p}
-                    className={`${
-                      page === p ? "text-blue-400 font-semibold" : ""
-                    }`}
-                    onClick={() => {
-                      handlePagination(p);
-                    }}
-                  >
-                    {p}
-                  </button>
-                ))}
-
-                {pageArray.length > 3 && <p className="tracking-wide">...</p>}
-
-                <button
-                  className={`${page === totalPages ? "text-blue-400" : ""}`}
-                  onClick={() => handlePagination(totalPages)}
-                >
-                  {totalPages}
-                </button>
-              </div>
-
-              <button
-                disabled={page === totalPages}
-                className={classNames("cursor-pointer", {
-                  "!cursor-not-allowed text-gray-500": page === totalPages,
-                })}
-                onClick={() => handlePagination("n")}
-              >
-                Next
-              </button>
-            </div>
+            <Pagination
+              customPagination={customPagination}
+              handlePagination={handlePagination}
+              length={results?.length || 0}
+              offset={offset!}
+              page={page}
+              pageArrayLength={pageArray.length}
+              totalPages={totalPages}
+            />
           </div>
         </div>
       </Container>
