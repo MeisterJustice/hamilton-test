@@ -1,9 +1,7 @@
+import CharacterPage from "../components/Character";
+
 const Character = () => {
-  return (
-    <div>
-      <div>Character</div>
-    </div>
-  );
+  return <CharacterPage />;
 };
 
 export default Character;

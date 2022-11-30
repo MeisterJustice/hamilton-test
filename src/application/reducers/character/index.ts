@@ -36,7 +36,7 @@ const character = (
     case GET_CHARACTER_SUCCESS:
       return {
         ...state,
-        character: payload?.data,
+        character: payload?.results[0],
         error: "",
       };
     case GET_CHARACTER_FAILURE:

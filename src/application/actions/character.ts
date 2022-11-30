@@ -27,9 +27,10 @@ export const getCharactersFailure = (error: any) => ({
   payload: error,
 });
 
-export const getCharacter = (callback?: ICallbackProps) => ({
+export const getCharacter = (id: string, callback?: ICallbackProps) => ({
   type: GET_CHARACTER,
   callback,
+  id,
 });
 
 export const getCharacters = (query?: string, callback?: ICallbackProps) => ({
